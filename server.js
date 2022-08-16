@@ -1,4 +1,4 @@
-const inquirer = require(inquirer);
+const inquirer = require("inquirer");
 const cTable = require("console.table");
 const db = require("./config/connection");
 
@@ -7,6 +7,7 @@ const prompt = () => {
         .prompt([
             {
                 type: "list",
+                pageSize: 8,
                 message: "What would you like to do?",
                 name: "action",
                 choices: [
@@ -52,15 +53,15 @@ const prompt = () => {
 };
 
 function viewAllEmployees() {
-    let sql = "SELECT * FROM employee";
+    let sql = "SELECT employee.id, employee.first_name, employee.last_Name, role.title, department.name, role.salary FROM employee JOIN role ON employee.role_id = role.id JOIN department ON role.department_id = department.id";
 
     db.query(sql, (error, results) => {
         if (error) {
-            throw error;
+            console.error(error);
         }
         console.table(results);
+        prompt();
     });
-    prompt();
 }
 
 function addEmployee() {
@@ -88,15 +89,15 @@ function addEmployee() {
             },
         ])
         .then((answers) => {
-            let sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (${answers.firstName}, ${answers.lastName}, ${answers.managerId})`;
+            let sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${answers.firstName}", "${answers.lastName}", ${answers.roleId}, ${answers.managerId})`;
 
             db.query(sql, (error, results) => {
                 if (error) {
-                    throw error;
+                    console.log(error);
                 }
-                console.table(results);
+                console.log('The employee has been successfully added!');
+                prompt();
             });
-            prompt();
         });
 }
 
@@ -119,11 +120,11 @@ function updateEmployeeRole() {
 
         db.query(sql, (error, results) => {
             if (error) {
-                throw error;
+                console.error(error);
             }
             console.table(results);
+            prompt();
         });
-        prompt();
     });
 }
 
@@ -132,12 +133,11 @@ function viewAllRoles() {
 
     db.query(sql, (error, results) => {
         if (error) {
-            throw error;
+            console.error(error);
         }
         console.table(results);
+        prompt();
     });
-
-    prompt();
 }
 
 function addRole() {
@@ -164,11 +164,11 @@ function addRole() {
 
         db.query(sql, (error, results) => {
             if (error) {
-                throw error;
+                console.error(error);
             }
-            console.table(results);
+            console.log('The role has been successfully added!');
+            prompt();
         });
-        prompt();
     });
 }
 
@@ -177,12 +177,11 @@ function viewAllDepartments() {
 
     db.query(sql, (error, results) => {
         if (error) {
-            throw error;
+            console.error(error);
         }
         console.table(results);
+        prompt();
     });
-
-    prompt();
 }
 
 function addDepartment() {
@@ -199,12 +198,16 @@ function addDepartment() {
 
         db.query(sql, (error, results) => {
             if (error) {
-                throw error;
+                console.error(error);
             }
-            console.table(results);
+            console.log('The department has been successfully added!');
+            prompt();
         });
-        prompt();
     });
+}
+
+function quit() {
+    process.exit(1);
 }
 
 prompt();
