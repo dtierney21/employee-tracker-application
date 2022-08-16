@@ -207,4 +207,4 @@ function addDepartment() {
     });
 }
 
-function quit() {}
+prompt();

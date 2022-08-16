@@ -4,4 +4,4 @@ package-lock.json
 .DS_Store
 INSTRUCTIONS.md
 /Assets
-.env
+/config
