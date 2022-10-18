@@ -5,3 +5,4 @@ package-lock.json
 INSTRUCTIONS.md
 /Assets
 /config
+.env

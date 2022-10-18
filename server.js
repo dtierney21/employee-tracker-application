@@ -1,51 +1,58 @@
-const inquirer = require("inquirer");
-const cTable = require("console.table");
-const db = require("./config/connection");
+const mysql = require('mysql2');
+const inquirer = require('inquirer');
+const cTable = require('console.table');
+
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+});
 
 const prompt = () => {
     return inquirer
         .prompt([
             {
-                type: "list",
+                type: 'list',
                 pageSize: 8,
-                message: "What would you like to do?",
-                name: "action",
+                message: 'What would you like to do?',
+                name: 'action',
                 choices: [
-                    "View All Employees",
-                    "Add Employee",
-                    "Update Employee Role",
-                    "View All Roles",
-                    "Add Role",
-                    "View All Departments",
-                    "Add Department",
-                    "Quit",
+                    'View All Employees',
+                    'Add Employee',
+                    'Update Employee Role',
+                    'View All Roles',
+                    'Add Role',
+                    'View All Departments',
+                    'Add Department',
+                    'Quit',
                 ],
             },
         ])
         .then((answer) => {
             switch (answer.action) {
-                case "View All Employees":
+                case 'View All Employees':
                     viewAllEmployees();
                     break;
-                case "Add Employee":
+                case 'Add Employee':
                     addEmployee();
                     break;
-                case "Update Employee Role":
+                case 'Update Employee Role':
                     updateEmployeeRole();
                     break;
-                case "View All Roles":
+                case 'View All Roles':
                     viewAllRoles();
                     break;
-                case "Add Role":
+                case 'Add Role':
                     addRole();
                     break;
-                case "View All Departments":
+                case 'View All Departments':
                     viewAllDepartments();
                     break;
-                case "Add Department":
+                case 'Add Department':
                     addDepartment();
                     break;
-                case "Quit":
+                case 'Quit':
                     quit();
                     break;
             }
@@ -69,24 +76,24 @@ function addEmployee() {
     inquirer
         .prompt([
             {
-                type: "input",
-                message: "What is the first name of the empoyee?",
-                name: "firstName",
+                type: 'input',
+                message: 'What is the first name of the empoyee?',
+                name: 'firstName',
             },
             {
-                type: "input",
-                message: "What is the last name of the empoyee?",
-                name: "lastName",
+                type: 'input',
+                message: 'What is the last name of the empoyee?',
+                name: 'lastName',
             },
             {
-                type: "input",
+                type: 'input',
                 message: "What is the id of the employee's role?",
-                name: "roleId",
+                name: 'roleId',
             },
             {
-                type: "input",
+                type: 'input',
                 message: "What is the id of the employee's manager?",
-                name: "managerId",
+                name: 'managerId',
             },
         ])
         .then((answers) => {
@@ -96,7 +103,7 @@ function addEmployee() {
                 if (error) {
                     console.log(error);
                 }
-                console.log("The employee has been successfully added!");
+                console.log('The employee has been successfully added!');
                 prompt();
             });
         });
@@ -106,14 +113,14 @@ function updateEmployeeRole() {
     inquirer
         .prompt([
             {
-                type: "input",
-                message: "What is the id of the employee you would like to update?",
-                name: "employeeId",
+                type: 'input',
+                message: 'What is the id of the employee you would like to update?',
+                name: 'employeeId',
             },
             {
-                type: "input",
+                type: 'input',
                 message: "What is the id of the employee's new role?",
-                name: "roleId",
+                name: 'roleId',
             },
         ])
         .then((answers) => {
@@ -130,7 +137,7 @@ function updateEmployeeRole() {
 }
 
 function viewAllRoles() {
-    let sql = "SELECT * FROM role";
+    let sql = 'SELECT * FROM role';
 
     db.query(sql, (error, results) => {
         if (error) {
@@ -145,19 +152,19 @@ function addRole() {
     inquirer
         .prompt([
             {
-                type: "input",
-                message: "What is the title of the role?",
-                name: "title",
+                type: 'input',
+                message: 'What is the title of the role?',
+                name: 'title',
             },
             {
-                type: "input",
-                message: "What is the salary of the role?",
-                name: "salary",
+                type: 'input',
+                message: 'What is the salary of the role?',
+                name: 'salary',
             },
             {
-                type: "input",
+                type: 'input',
                 message: "What is the id of the role's department?",
-                name: "departmentId",
+                name: 'departmentId',
             },
         ])
         .then((answers) => {
@@ -167,14 +174,14 @@ function addRole() {
                 if (error) {
                     console.error(error);
                 }
-                console.log("The role has been successfully added!");
+                console.log('The role has been successfully added!');
                 prompt();
             });
         });
 }
 
 function viewAllDepartments() {
-    let sql = "SELECT * FROM department";
+    let sql = 'SELECT * FROM department';
 
     db.query(sql, (error, results) => {
         if (error) {
@@ -189,9 +196,9 @@ function addDepartment() {
     inquirer
         .prompt([
             {
-                type: "input",
-                message: "What is the name of the department?",
-                name: "name",
+                type: 'input',
+                message: 'What is the name of the department?',
+                name: 'name',
             },
         ])
         .then((answers) => {
@@ -201,7 +208,7 @@ function addDepartment() {
                 if (error) {
                     console.error(error);
                 }
-                console.log("The department has been successfully added!");
+                console.log('The department has been successfully added!');
                 prompt();
             });
         });
