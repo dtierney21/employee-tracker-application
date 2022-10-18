@@ -39,7 +39,7 @@ The following image shows an example of the application being used from the comm
 
 ## Repo
 ```
-
+https://github.com/dtierney21/employee-tracker-application
 ```
 ## Demo Video
 ```
