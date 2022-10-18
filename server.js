@@ -127,7 +127,7 @@ function updateEmployeeRole() {
             },
         ])
         .then((answers) => {
-            let sql = `UPDATE employee SET role_id = ${answers.roleId} WHERE id = ${answers.employeeId})`;
+            let sql = `UPDATE employee SET role_id = ${answers.roleId} WHERE id = ${answers.employeeId}`;
 
             db.query(sql, (error, results) => {
                 if (error) {
@@ -171,7 +171,7 @@ function addRole() {
             },
         ])
         .then((answers) => {
-            let sql = `INSERT INTO role (title, salary, department_id) VALUES (${answers.title}, ${answers.salary}, ${answers.departmentId})`;
+            let sql = `INSERT INTO role (title, salary, department_id) VALUES ("${answers.title}", ${answers.salary}, ${answers.departmentId})`;
 
             db.query(sql, (error, results) => {
                 if (error) {
@@ -205,7 +205,7 @@ function addDepartment() {
             },
         ])
         .then((answers) => {
-            let sql = `INSERT INTO role (name) VALUES (${answers.name})`;
+            let sql = `INSERT INTO department (name) VALUES ("${answers.name}")`;
 
             db.query(sql, (error, results) => {
                 if (error) {
